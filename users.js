@@ -27,5 +27,12 @@ async function getUsers() {
   return users;
 }
 
+const getSingleUser = async (userId) => {
+  let user = await User.findById(userId);
+  return user;
+};
+
 exports.createUser = createUser;
 exports.getUsers = getUsers;
+exports.User = User;
+exports.getSingleUser = getSingleUser;
