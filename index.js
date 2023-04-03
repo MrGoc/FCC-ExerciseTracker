@@ -4,6 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 require("dotenv").config();
 const createUser = require("./users.js").createUser;
+const User = require("./users.js").User;
 
 app.use(cors());
 app.use(express.static("public"));
@@ -17,6 +18,11 @@ app.get("/", (req, res) => {
 
 app.post("/api/users", (req, res) => {
   res.json(createUser(req.body.username));
+});
+
+app.get("/api/users", (req, res) => {
+  let users = User.find();
+  res.send(users);
 });
 
 const listener = app.listen(process.env.PORT || 3000, () => {

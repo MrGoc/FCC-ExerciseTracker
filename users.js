@@ -22,4 +22,9 @@ const createUser = (userName) => {
   return user;
 };
 
+const getUsers = () => {
+  return User.find();
+};
+
 exports.createUser = createUser;
+exports.User = User;
