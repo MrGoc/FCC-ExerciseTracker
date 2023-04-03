@@ -22,9 +22,10 @@ const createUser = (userName) => {
   return user;
 };
 
-const getUsers = () => {
-  return User.find();
-};
+async function getUsers() {
+  let users = await User.find({});
+  return users;
+}
 
 exports.createUser = createUser;
-exports.User = User;
+exports.getUsers = getUsers;

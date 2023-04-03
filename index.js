@@ -2,9 +2,10 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const { User } = require("./users.js");
 require("dotenv").config();
 const createUser = require("./users.js").createUser;
-const User = require("./users.js").User;
+const getUsers = require("./users.js").getUsers;
 
 app.use(cors());
 app.use(express.static("public"));
@@ -21,8 +22,10 @@ app.post("/api/users", (req, res) => {
 });
 
 app.get("/api/users", (req, res) => {
-  let users = User.find();
-  res.send(users);
+  let users = getUsers();
+  users.then((usrs) => {
+    res.json(usrs);
+  });
 });
 
 const listener = app.listen(process.env.PORT || 3000, () => {
