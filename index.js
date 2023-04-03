@@ -8,6 +8,7 @@ const createUser = require("./users.js").createUser;
 const getUsers = require("./users.js").getUsers;
 const getSingleUser = require("./users.js").getSingleUser;
 const createExercise = require("./exercises.js").createExercise;
+const getExercises = require("./exercises.js").getExercises;
 
 app.use(cors());
 app.use(express.static("public"));
@@ -46,6 +47,32 @@ app.post("/api/users/:_id/exercises", (req, res) => {
       duration: exercise.duration,
       description: exercise.description,
     });
+  });
+});
+
+app.get("/api/users/:_id/logs", (req, res) => {
+  let myEx = [];
+  let user = getSingleUser(req.params._id);
+  user.then((usr) => {
+    let exercises = getExercises(req.params._id);
+    exercises
+      .then((ex) => {
+        for (let i = 0; i < ex.length; i++) {
+          myEx.push({
+            description: ex[i].description,
+            duration: ex[i].duration,
+            date: ex[i].date,
+          });
+        }
+      })
+      .then(() => {
+        res.json({
+          username: usr.username,
+          count: myEx.length,
+          _id: usr._id,
+          log: myEx,
+        });
+      });
   });
 });
 

@@ -31,4 +31,10 @@ const createExercise = (userId, description, duration, date) => {
   return exercise;
 };
 
+const getExercises = async (userId) => {
+  let exercises = await Exercise.find({ userId: userId }).exec();
+  return exercises;
+};
+
 exports.createExercise = createExercise;
+exports.getExercises = getExercises;
