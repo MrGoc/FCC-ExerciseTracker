@@ -54,7 +54,12 @@ app.get("/api/users/:_id/logs", (req, res) => {
   let myEx = [];
   let user = getSingleUser(req.params._id);
   user.then((usr) => {
-    let exercises = getExercises(req.params._id);
+    let exercises = getExercises(
+      req.params._id,
+      req.query.from,
+      req.query.to,
+      req.query.limit
+    );
     exercises
       .then((ex) => {
         for (let i = 0; i < ex.length; i++) {

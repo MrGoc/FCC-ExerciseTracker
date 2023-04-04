@@ -9,6 +9,7 @@ let exerciseShema = new mongoose.Schema({
   description: String,
   duration: Number,
   date: String,
+  realDate: Date,
 });
 
 let Exercise = mongoose.model("Exercise", exerciseShema, "exercise");
@@ -25,15 +26,21 @@ const createExercise = (userId, description, duration, date) => {
     description: description,
     duration: duration,
     date: currentDate.toDateString(),
+    realDate: currentDate,
   });
 
   exercise.save();
   return exercise;
 };
 
-const getExercises = async (userId) => {
-  let exercises = await Exercise.find({ userId: userId }).exec();
-  return exercises;
+const getExercises = async (userId, from, to, limit) => {
+  let exercises = Exercise.find({ userId: userId });
+
+  if (from !== undefined) exercises = exercises.gte("realDate", new Date(from));
+  if (to !== undefined) exercises = exercises.lte("realDate", new Date(to));
+  if (limit !== undefined) exercises = exercises.limit(limit);
+
+  return await exercises.exec();
 };
 
 exports.createExercise = createExercise;
