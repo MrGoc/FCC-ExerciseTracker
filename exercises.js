@@ -12,14 +12,17 @@ let exerciseShema = new mongoose.Schema({
   realDate: Date,
 });
 
+function isValidDate(d) {
+  return d instanceof Date && !isNaN(d);
+}
+
 let Exercise = mongoose.model("Exercise", exerciseShema, "exercise");
 
 const createExercise = (userId, description, duration, date) => {
   let currentDate = new Date(date);
 
-  if (date === "") {
+  if (date === "" || !isValidDate(currentDate))
     currentDate = new Date(Date.now());
-  }
 
   let exercise = new Exercise({
     userId: userId,
